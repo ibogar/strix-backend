@@ -13,6 +13,8 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all().order_by("id")
     serializer_class = UserSerializer
 
+    lookup_field = 'username'
+
     def get_permissions(self):
 
         if self.action == 'create':
