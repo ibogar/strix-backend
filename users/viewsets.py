@@ -15,6 +15,12 @@ class UserViewSet(ModelViewSet):
 
     lookup_field = 'username'
 
+    filter_backends = [SearchFilter]
+    search_fields = [
+        'username',
+        'full_name',
+    ]
+
     def get_permissions(self):
 
         if self.action == 'create':
