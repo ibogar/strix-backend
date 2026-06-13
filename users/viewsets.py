@@ -39,3 +39,25 @@ class UserViewSet(ModelViewSet):
     def logged_user(self, request):
         serializer = LoggedUserSerializer(request.user)
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    def follow(self, request, username=None):
+
+        target_user = self.get_object()
+
+        request.user.following.add(target_user)
+
+        return Response({
+            "message": "User followed"
+        })
+
+    @action(detail=True, methods=['post'])
+    def unfollow(self, request, username=None):
+
+        target_user = self.get_object()
+
+        request.user.following.remove(target_user)
+
+        return Response({
+            "message": "User unfollowed"
+        })
