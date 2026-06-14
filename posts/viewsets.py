@@ -1,15 +1,39 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import (IsAuthenticated, BasePermission)
 
 from .models import Post
 from .serializers import PostSerializer
 
+
+
+class IsOwner(BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+
+        return obj.user == request.user
+
 class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
 
+    http_method_names = ['get', 'post', 'delete']
+
+    def get_permissions(self):
+
+        if self.action == 'destroy':
+            permission_classes = [IsOwner]
+
+        else:
+            permission_classes = [IsAuthenticated]
+
+        return [permission() for permission in permission_classes]
+
     def get_queryset(self):
         return Post.objects.all()
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=False, methods=['get'])
     def feed(self, request):
