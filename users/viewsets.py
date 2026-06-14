@@ -70,6 +70,6 @@ class UserViewSet(ModelViewSet):
 
         posts = user.posts.all()
 
-        serializer = PostSerializer(posts, many=True)
+        serializer = PostSerializer(posts, many=True, context=self.get_serializer_context())
 
         return Response(serializer.data)

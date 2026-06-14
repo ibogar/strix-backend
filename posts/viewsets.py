@@ -56,3 +56,27 @@ class PostViewSet(ModelViewSet):
         serializer = self.get_serializer(posts, many=True)
 
         return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    def like(self, request, pk=None):
+
+        post = self.get_object()
+
+        post.likes.add(request.user)
+
+        return Response({
+            'likes_count': post.likes.count(),
+            'is_liked': True,
+        })
+    
+    @action(detail=True, methods=['delete'])
+    def unlike(self, request, pk=None):
+
+        post = self.get_object()
+
+        post.likes.remove(request.user)
+
+        return Response({
+            'likes_count': post.likes.count(),
+            'is_liked': False,
+        })
