@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import (IsAuthenticated, BasePermission)
 
 from .models import Post
-from .serializers import PostSerializer
+from posts.serializers import (PostSerializer, CommentSerializer)
 
 
 
@@ -80,3 +80,35 @@ class PostViewSet(ModelViewSet):
             'likes_count': post.likes.count(),
             'is_liked': False,
         })
+    
+    @action(detail=True, methods=['get'])
+    def comments(self, request, pk=None):
+
+        post = self.get_object()
+
+        serializer = CommentSerializer(
+            post.comments.all(),
+            many=True,
+            context={'request': request}
+        )
+
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    def comment(self, request, pk=None):
+
+        post = self.get_object()
+
+        serializer = CommentSerializer(
+            data=request.data,
+            context={'request': request}
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save(
+            user=request.user,
+            post=post
+        )
+
+        return Response(serializer.data, status=201)

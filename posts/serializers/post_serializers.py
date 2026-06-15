@@ -1,12 +1,13 @@
 from rest_framework import serializers
 
-from .models import Post
+from posts.models import Post
 
 class PostSerializer(serializers.ModelSerializer):
 
     author = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField()
+    comment_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -16,6 +17,7 @@ class PostSerializer(serializers.ModelSerializer):
             'content',
             'likes_count',
             'is_liked',
+            'comment_count',
         ]
 
         read_only_fields = ['user']
@@ -42,3 +44,6 @@ class PostSerializer(serializers.ModelSerializer):
             return False
 
         return obj.likes.filter(id=request.user.id).exists()
+    
+    def get_comment_count(self, obj):
+        return obj.comments.count()
