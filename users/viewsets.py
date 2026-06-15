@@ -7,6 +7,7 @@ from rest_framework.filters import SearchFilter
 from .models import User
 from users.serializers import UserSerializer, LoggedUserSerializer
 from .utils import IsOwner
+from posts.serializers import PostSerializer
 
 
 class UserViewSet(ModelViewSet):
@@ -61,3 +62,14 @@ class UserViewSet(ModelViewSet):
         return Response({
             "message": "User unfollowed"
         })
+
+    @action(detail=True, methods=['get'])
+    def posts(self, request, username=None):
+
+        user = self.get_object()
+
+        posts = user.posts.all()
+
+        serializer = PostSerializer(posts, many=True, context=self.get_serializer_context())
+
+        return Response(serializer.data)
