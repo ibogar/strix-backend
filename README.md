@@ -38,7 +38,7 @@ Você encontra a versão em produção aqui:
 
 Se preferir explorar a aplicação sem criar uma conta com suas informações, uma **conta para visitantes** dedicada está disponível.
 
-**Email:** `visitor@strix.com`
+**Email:** `visitor@example.com`
 **Senha:** `visitor123`
 
 > A conta de visitante tem o propósito exclusivo de explorar a aplicação e seus recursos.
@@ -130,7 +130,7 @@ You can access the production version here:
 
 If you'd like to explore the application without creating an account with your personal information, a dedicated **visitor account** is available.
 
-**Email:** `visitor@strix.com`
+**Email:** `visitor@example.com`
 **Password:** `visitor123`
 
 > The visitor account is intended exclusively for exploring the application and its features.
